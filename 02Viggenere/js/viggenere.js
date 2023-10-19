@@ -32,141 +32,115 @@ var viggenere = viggenere || (function(){
 
         return String(txt).replace(re, function(match){
             return replace(match);
-
         });
     };
     return{
         //si vamos a codificar o decodificar
-        ancode : function(txt, desp)
-        {
-            return doStaff(txt, desp, true)
+        encode : function(txt, desp){
+            return doStaff(txt, desp, true);
         },
-        decode : function(txt,desp)
-        {
-            return doStaff(txt, desp, false)
+        decode : function(txt, desp){
+            return  doStaff(txt, desp, false);
         }
-    };
+    }; 
 })();
 
-function longitudCifrar()
-{
+function longitudCifrar(){
     camposVacios();
     var texto = document.getElementById("txt").value;
     var clave = document.getElementById("txtClave").value;
 
-    if(clave.length>texto.length)
-    {
-        alert("La clave no puede ser más larga que el texto a cifrar");
-    }
-    else
-    {
+    if(clave.length > texto.length){
+        alert("La clave no puede ser mas larga que el texto a cifrar");
+    }else{
         codificar(texto, clave);
     }
-
 }
 
-function longitudDescifrar()
-{
+
+function longitudDescifrar(){
     camposVacios();
     var texto = document.getElementById("txt").value;
     var clave = document.getElementById("txtClave").value;
 
-    if(clave.length>texto.length)
-    {
-        alert("La clave no puede ser más larga que el texto a cifrar");
-    }
-    else
-    {
+    if(clave.length > texto.length){
+        alert("La clave no puede ser mas larga que el texto a cifrar");
+    }else{
         decodificar(texto, clave);
     }
-
 }
 
-function codificar(texto,clave)
-{
+function codificar(texto, clave){
+
     var resultado = "";
-    var indiceClave= 0;
-    var CharArTexto = texto.split('');
-    for (var i=0; i< CharArTexto.length; i ++)
-    {
-        var des= obindiceClave(clave.CharAr(indiceClave));
+    var indiceClave = 0;
+    var charArTexto = texto.split('');
+
+    for(var i = 0; i < charArTexto.length; i++){
+
+        var des = obindiceClave(clave.charAt(indiceClave));
         var charTexto = charArTexto[i];
 
-        resultado += viggenere.encode(charTexto,(des>=26)? des%26 : des);
-
+        resultado += viggenere.encode(charTexto, (des >= 26)? des%26 : des);
         indiceClave++;
 
-        if(indiceClave >= clave.length)
-        {
+        if(indiceClave >= clave.length){
             indiceClave = 0;
         }
 
-        document.getElementById("res").value = resultado;
-
+        document.getElementById("res").value = resultado; 
     }
-
 }
 
-    function decodificar(texto,clave)
-    {
-        var resultado = "";
-        var indiceClave= 0;
-        var CharArTexto = texto.split('');
 
-        for (var i=0; i< CharArTexto.length; i ++)
-        {
-            var des= obindiceClave(clave.CharAr(indiceClave));
-            var charTexto = charArTexto[i];
+function decodificar(texto, clave){
 
-            resultado += viggenere.decode(charTexto,(des>=26)? des%26 : des);
+    var resultado = "";
+    var indiceClave = 0;
+    var charArTexto = texto.split('');
 
-            indiceClave++;
+    for(var i = 0; i < charArTexto.length; i++){
 
-            if(indiceClave >= clave.length)
-            {
-                indiceClave = 0;
-            }
+        var des = obindiceClave(clave.charAt(indiceClave));
+        var charTexto = charArTexto[i];
 
-            document.getElementById("res").value = resultado;
+        resultado += viggenere.decode(charTexto, (des >= 26)? des%26 : des);
+        indiceClave++;
 
+        if(indiceClave >= clave.length){
+            indiceClave = 0;
         }
-    }
 
-    function obindice(reco)
-    {
-        var abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 
+        document.getElementById("res").value = resultado; 
+    }
+}
+
+function obindiceClave(reco){
+    var abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 
         'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-        'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    return abc.indexOf(reco.toLowerCase());
+}
 
-        return abc.indexOf(reco.toLowerCase());
+function camposVacios(){
+    var texto = document.getElementById("txt").value;
+    var clave = document.getElementById("txtClave").value;
+
+    if(texto == ""){
+        alert("El texto a cifrar no puede estar vacio");
+    }if(clave == ""){
+        alert("La clave no puede estar vacia");
     }
+}
 
-    function camposVacios()
-    {
-        var texto = document.getElementById("txt").value;
-        var clave = document.getElementById("txtClave").value;
+function colocar(){
+    var copiado = document.getElementById("res").value;
+    document.getElementById("txt").value = copiado;   
+}
 
-        if(texto== "")
-        {
-            alert("El texto a cifrar no puede estar vacío");
+function reiniciar(){
+    document.getElementById("txt").value = "";
+    document.getElementById("txtClave").value = "";
+    document.getElementById("res").value = "";
+}
 
-        }
-        if(clave == "")
-        {
-            alert("La clave no puede estar vacía");
-        }
-    }
-
-    function colocar()
-    {
-        var copiado = document.getElementById("res"). value;
-
-        document.getElementById("txt").value = copiado;
-    }
-
-    function reiniciar()
-    {
-        document.getElementById("txt").value = "";
-        document.getElementById("txtClave").value= "";
-        document.getElementById("res").value = "";
-    }
